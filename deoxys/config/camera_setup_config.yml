@@ -1,0 +1,41 @@
+cam_host : 192.168.1.113
+cam_port : 10001
+
+cam_infos:
+ - cam_id: 0
+   cam_serial_num: '310222078614'
+   type: realsense
+   name: camera_0
+
+ - cam_id: 1
+   cam_serial_num: '213622070741'
+   type: realsense
+   name: camera_1
+
+ - cam_id: 2
+   cam_serial_num: '153122078525'
+   type: realsense
+   name: camera_2
+
+ - cam_id: 3
+   cam_serial_num: '243322072209'
+   type: realsense
+   name: camera_3
+
+ - cam_id: 4
+   cam_serial_num: '152122075567'
+   type: realsense
+   name: camera_4
+
+cam_config:
+ realsense:
+  width: 640
+  height: 480
+  fps: 30
+  processing_preset: 1
+  depth: false
+
+ opencv:
+  width: 640
+  height: 480
+  fps: 30

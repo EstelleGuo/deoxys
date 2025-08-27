@@ -1,0 +1,30 @@
+# Get current directory path
+PROJ_DIR="$(pwd)"
+echo "Current directory: $PROJ_DIR"
+
+# Check if mamba is installed, if not, install it using conda
+if ! command -v mamba &> /dev/null; then
+    echo "mamba not found, installing with conda..."
+    conda install -y -n base -c conda-forge mamba
+fi
+
+# Check if franka_teach environment exists, if not, create it
+if ! conda env list | grep -q 'franka_teach'; then
+    echo "Creating conda environment 'franka_teach'..."
+    mamba create -y -n franka_teach python=3.10
+    mamba install -y -n franka_teach zeromq libprotobuf protobuf cmake make pkg-config
+fi
+
+cd "$PROJ_DIR"
+mkdir -p build
+cd build
+mamba run -n franka_teach cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_DEOXYS=1
+mamba run -n franka_teach make -j
+# Copy proto interface files to $PROJ_DIR/proto
+mkdir -p "$PROJ_DIR/deoxys/proto"
+cp -r "$PROJ_DIR/build/proto/python/"* "$PROJ_DIR/deoxys/proto/"
+rm -rf "$PROJ_DIR/build"
+
+cd "$PROJ_DIR"
+mamba run -n franka_teach pip install -U -r requirements.txt
+mamba run -n franka_teach pip install -e .
