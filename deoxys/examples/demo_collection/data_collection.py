@@ -56,7 +56,7 @@ def main():
 
     ## Move to Initial joint position
     ## This can be modified, if starting point needs to be changed
-    joint_start = [0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, -np.pi / 4]
+    joint_start = [0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, 0]
     print("move to starting point of the trajectory ...")
     print(joint_start)
     reset_joints_to(robot_interface, joint_start)
@@ -107,29 +107,31 @@ def main():
         
         if action is None:
             break
-        
+
         # Start collection on a specific button press (e.g., button 1 for start)
         ## !! Add one more state of device for checking BUTTON 'A'
-        if device._collecting:  # assuming button 1 starts the collection
+        if not collecting and device._collecting:  # assuming button 1 starts the collection
             collecting = True
             print("Started collecting data...")
             start_time = time.time_ns()
 
         # Stop collection on a specific button press (e.g., button 2 for stop)
         ## !! Add one more state of device for checking BUTTON 'B'
-        if device._collecting:  # assuming button 2 stops the collection
+        if collecting and not device._collecting:  # assuming button 2 stops the collection
             collecting = False
             print("Stopped collecting data.")
             break
         
-        if collecting:
-            robot_interface.control(
+
+        # if collecting:
+
+        robot_interface.control(
             controller_type=controller_type,
             action=action,
             controller_cfg=controller_cfg,
         )
-            if len(robot_interface._state_buffer) == 0:
-                continue
+        if len(robot_interface._state_buffer) == 0:
+            continue
 
         last_state = robot_interface._state_buffer[-1]
         # print("Gripper state buffer:", robot_interface._gripper_state_buffer)
@@ -159,6 +161,8 @@ def main():
 
         end_time = time.time_ns()
         print(f"Time profile: {(end_time - start_time) / 10 ** 9}")
+
+
 
     np.savez(f"{folder}/testing_demo_action", data=np.array(data["action"]))
     np.savez(f"{folder}/testing_demo_proprio_ee", data=np.array(data["robot_eef_pose"]))
