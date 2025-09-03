@@ -8,24 +8,27 @@ cam_infos:
    name: camera_0
 
  - cam_id: 1
-   cam_serial_num: '213622070741'
+   cam_serial_num: '347622076290'
    type: realsense
    name: camera_1
 
  - cam_id: 2
-   cam_serial_num: '153122078525'
+   cam_serial_num: '405622076349'
    type: realsense
    name: camera_2
-
+   
  - cam_id: 3
    cam_serial_num: '243322072209'
    type: realsense
    name: camera_3
 
  - cam_id: 4
-   cam_serial_num: '152122075567'
+   cam_serial_num: '405622072676'
    type: realsense
    name: camera_4
+
+
+ 
 
 cam_config:
  realsense:

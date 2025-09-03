@@ -22,7 +22,7 @@
 #     print("Exiting...")
 #     pygame.quit()
 
-from deoxys.utils.io_devices.gamepad import ZikwayGamepad
+from deoxys.deoxys.utils.io_devices.gamepad_old import ZikwayGamepad
 import time
 
 gamepad = ZikwayGamepad()
