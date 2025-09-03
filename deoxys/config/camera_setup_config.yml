@@ -6,39 +6,148 @@ cam_infos:
    cam_serial_num: '310222078614'
    type: realsense
    name: camera_0
+   cam_config:
+    width: 640
+    height: 480
+    fps: 30
+    processing_preset: 1
+    color_sensor:
+      enable: true
+      auto_exposure: true
+      auto_white_balance: true
+      exposure: 166               # 曝光值 (1-10000)
+      gain: 64                    # 增益值 (0-128)
+      white_balance: 4600         # 白平衡值 (2800-6500)
+      brightness: 0               # 亮度 (-64 to 64)
+      contrast: 50                # 对比度 (0-100)
+      saturation: 64              # 饱和度 (0-100)
+    depth_sensor: 
+      enable: false
+    ir_sensors: 
+      enable: false
+      auto_exposure: true
+      disable_emitter: false      # 是否关闭红外投射器
+      exposure: 8500              # 曝光值 (1-200000)
+      gain: 16                    # 增益值 (16-248)
+      laser_power: 150            # 激光功率 (0-360)
 
  - cam_id: 1
    cam_serial_num: '347622076290'
    type: realsense
    name: camera_1
+   cam_config:
+    width: 640
+    height: 480
+    fps: 30
+    processing_preset: 1
+    color_sensor:
+      enable: true
+      auto_exposure: true
+      auto_white_balance: true
+      exposure: 166               # 曝光值 (1-10000)
+      gain: 64                    # 增益值 (0-128)
+      white_balance: 4600         # 白平衡值 (2800-6500)
+      brightness: 0               # 亮度 (-64 to 64)
+      contrast: 50                # 对比度 (0-100)
+      saturation: 64              # 饱和度 (0-100)
+    depth_sensor: 
+      enable: false
+    ir_sensors: 
+      enable: false
+      auto_exposure: true
+      disable_emitter: false      # 是否关闭红外投射器
+      exposure: 8500              # 曝光值 (1-200000)
+      gain: 16                    # 增益值 (16-248)
+      laser_power: 150            # 激光功率 (0-360)
 
  - cam_id: 2
    cam_serial_num: '405622076349'
    type: realsense
    name: camera_2
-   
+   cam_config:
+    width: 640
+    height: 480
+    fps: 30
+    processing_preset: 1
+    color_sensor:
+      enable: true
+      auto_exposure: true
+      auto_white_balance: true
+      exposure: 166               # 曝光值 (1-10000)
+      gain: 64                    # 增益值 (0-128)
+      white_balance: 4600         # 白平衡值 (2800-6500)
+      brightness: 0               # 亮度 (-64 to 64)
+      contrast: 50                # 对比度 (0-100)
+      saturation: 64              # 饱和度 (0-100)
+    depth_sensor: 
+      enable: false               # Enable depth stream for this camera
+    ir_sensors: 
+      enable: false
+      auto_exposure: true
+      disable_emitter: false      # 是否关闭红外投射器
+      exposure: 8500              # 曝光值 (1-200000)
+      gain: 16                    # 增益值 (16-248)
+      laser_power: 150            # 激光功率 (0-360)
+
  - cam_id: 3
    cam_serial_num: '243322072209'
    type: realsense
    name: camera_3
+   cam_config:
+    width: 640
+    height: 480
+    fps: 30
+    processing_preset: 1
+    color_sensor:
+      enable: true
+      auto_exposure: true
+      auto_white_balance: true
+      exposure: 166               # 曝光值 (1-10000)
+      gain: 64                    # 增益值 (0-128)
+      white_balance: 4600         # 白平衡值 (2800-6500)
+      brightness: 0               # 亮度 (-64 to 64)
+      contrast: 50                # 对比度 (0-100)
+      saturation: 64              # 饱和度 (0-100)
+    depth_sensor: 
+      enable: false
+    ir_sensors: 
+      enable: false
+      auto_exposure: true
+      disable_emitter: false      # 是否关闭红外投射器
+      exposure: 8500              # 曝光值 (1-200000)
+      gain: 16                    # 增益值 (16-248)
+      laser_power: 150            # 激光功率 (0-360)
 
  - cam_id: 4
    cam_serial_num: '405622072676'
    type: realsense
    name: camera_4
+   cam_config:
+    width: 640
+    height: 480
+    fps: 30
+    processing_preset: 1
+    color_sensor:
+      enable: true
+      auto_exposure: true
+      auto_white_balance: true
+      exposure: 166               # 曝光值 (1-10000)
+      gain: 64                    # 增益值 (0-128)
+      white_balance: 4600         # 白平衡值 (2800-6500)
+      brightness: 0               # 亮度 (-64 to 64)
+      contrast: 50                # 对比度 (0-100)
+      saturation: 64              # 饱和度 (0-100)
+    depth_sensor: 
+      enable: false               # Enable depth stream
+    ir_sensors: 
+      enable: true               # Enable IR streams
+      auto_exposure: true
+      disable_emitter: true       # 是否关闭红外投射器
+      exposure: 8500              # 曝光值 (1-200000)
+      gain: 16                    # 增益值 (16-248)
+      laser_power: 150            # 激光功率 (0-360)
 
-
- 
-
-cam_config:
- realsense:
-  width: 640
-  height: 480
-  fps: 30
-  processing_preset: 1
-  depth: false
-
- opencv:
-  width: 640
-  height: 480
-  fps: 30
+#  opencv:
+#   width: 640
+#   height: 480
+#   fps: 30
