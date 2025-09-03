@@ -19,7 +19,7 @@ logger = get_deoxys_example_logger()
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--interface-cfg", type=str, default="charmander.yml")
+    parser.add_argument("--interface-cfg", type=str, default="franka_gn.yml")
     parser.add_argument(
         "--controller-cfg", type=str, default="joint-position-controller.yml"
     )
@@ -38,15 +38,8 @@ def main():
     controller_type = "JOINT_POSITION"
 
     # Golden resetting joints
-    reset_joint_positions = [
-        0.09162008114028396,
-        -0.19826458111314524,
-        -0.01990020486871322,
-        -2.4732269941140346,
-        -0.01307073642274261,
-        2.30396583422025,
-        0.8480939705504309,
-    ]
+    reset_joint_positions = [1, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 4]
+    
 
     # This is for varying initialization of joints a little bit to
     # increase data variation.

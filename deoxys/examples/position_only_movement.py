@@ -26,11 +26,11 @@ def main():
     logger.debug("Robot interface initalized")
     position_only_gripper_move_by(robot_interface, delta_pos=[0.2, 0.05, 0], grasp=False)
     logger.debug("First movement finished")
-    position_only_gripper_move_by(robot_interface, delta_pos=[0.0, 0.0, -0.22], grasp=False)
+    position_only_gripper_move_by(robot_interface, delta_pos=[0.0, 0.0, -0.12], grasp=False)
     logger.debug("Second movement finished")
     position_only_gripper_move_by(robot_interface, delta_pos=[0.0, 0.0, 0.0], grasp=True)
     logger.debug("Third movement finished")
-    position_only_gripper_move_by(robot_interface, delta_pos=[0.0, 0.0, 0.22], grasp=True)    
+    position_only_gripper_move_by(robot_interface, delta_pos=[0.0, 0.0, 0.12], grasp=True)    
     logger.debug("Forth movement finished")
     position_only_gripper_move_by(
         robot_interface, delta_pos=[-0.2, -0.05, 0.0], grasp=True

@@ -13,13 +13,13 @@ from deoxys.franka_interface import FrankaInterface
 from deoxys.utils import YamlConfig
 from deoxys.utils.input_utils import input2action
 from deoxys.utils.io_devices import SpaceMouse
-from deoxys.utils.io_devices import ZikwayGamepad
+from deoxys.utils.io_devices import ZikwayGamepad, DualSenseGamepad
 from deoxys.utils.cam_utils import load_camera_config 
 from deoxys.experimental.motion_utils import reset_joints_to
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--interface-cfg", type=str, default="franka_gyh.yml")
+    parser.add_argument("--interface-cfg", type=str, default="franka_gn.yml")
     parser.add_argument(
         "--controller-cfg", type=str, default="osc-position-controller.yml"
     )
@@ -56,15 +56,14 @@ def main():
 
     ## Move to Initial joint position
     ## This can be modified, if starting point needs to be changed
-    joint_start = [0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, 0]
+    joint_start = [0., -np.pi / 4, 0., -3 * np.pi / 4, 0., np.pi / 2, 0.]
     print("move to starting point of the trajectory ...")
     print(joint_start)
     reset_joints_to(robot_interface, joint_start)
     time.sleep(1)
 
     print("starting gamepad controller ...")
-    # device = SpaceMouse(vendor_id=9583, product_id=50741)
-    device = ZikwayGamepad(pos_sensitivity= 1.0, rot_sensitivity=1.0)
+    device = DualSenseGamepad(pos_sensitivity= 1.0, rot_sensitivity=1.0)
     device.start_control()
 
     # Initialize camera interfaces. 
@@ -109,22 +108,19 @@ def main():
             break
 
         # Start collection on a specific button press (e.g., button 1 for start)
-        ## !! Add one more state of device for checking BUTTON 'A'
+        ## !! Add one more state of device for checking BUTTON 'Cross'
         if not collecting and device._collecting:  # assuming button 1 starts the collection
             collecting = True
             print("Started collecting data...")
             start_time = time.time_ns()
 
         # Stop collection on a specific button press (e.g., button 2 for stop)
-        ## !! Add one more state of device for checking BUTTON 'B'
+        ## !! Add one more state of device for checking BUTTON 'Circle'
         if collecting and not device._collecting:  # assuming button 2 stops the collection
             collecting = False
             print("Stopped collecting data.")
             break
         
-
-        # if collecting:
-
         robot_interface.control(
             controller_type=controller_type,
             action=action,
@@ -141,8 +137,7 @@ def main():
             # Handle the empty case appropriately
             last_gripper_state = None
 
-        # if np.linalg.norm(action[:-1]) < 1e-3 or not 
-        if not collecting:
+        if np.linalg.norm(action[:-1]) < 1e-3 and not collecting:
             continue
 
         print(action)
@@ -154,16 +149,15 @@ def main():
 
         if last_gripper_state is not None:
             data["proprio_gripper_state"].append(np.array(last_gripper_state.width))
+        
         # Get img info
-
-         # Capture camera images info
+        # Capture camera images info - only RGB/color stream
         for cam_name, image_content in client.img_contents.items():
-            data[cam_name].append(image_content['img_array'])
+            if 'color' in image_content['streams']:
+                data[cam_name].append(image_content['streams']['color']['img_array'].copy())
 
         end_time = time.time_ns()
         print(f"Time profile: {(end_time - start_time) / 10 ** 9}")
-
-
 
     np.savez(f"{folder}/testing_demo_action", data=np.array(data["action"]))
     np.savez(f"{folder}/testing_demo_proprio_ee", data=np.array(data["robot_eef_pose"]))
@@ -181,9 +175,13 @@ def main():
     for cam_info in camera_infos:
         np.savez(f"{folder}/testing_demo_camera_{cam_info.camera_name}", data=np.array(data[cam_info.camera_name]))
 
-    # client._close()
+    print("Franka Interface Stopped.")
     robot_interface.close()
+    print("Gamepad Interface Stopped.")
     device.stop_control()
+    print("Camera Interface Stopped.")
+    client.stop()
+    image_receive_thread.join(timeout=2.0)
 
     save = input("Save or not? (enter 0 or 1)")
     save = bool(int(save))

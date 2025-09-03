@@ -20,7 +20,7 @@ logger = get_deoxys_example_logger()
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--interface-cfg", type=str, default="franka_gyh.yml")
+    parser.add_argument("--interface-cfg", type=str, default="franka_right.yml")
     parser.add_argument(
         "--controller-cfg", type=str, default="joint-position-controller.yml"
     )
@@ -41,9 +41,28 @@ def main():
     controller_cfg = YamlConfig(config_root + f"/{args.controller_cfg}").as_easydict()
 
     controller_type = "JOINT_POSITION"
-    
 
-    reset_joint_positions = [0, -np.pi/4, 0, -3/4 * np.pi, 0, np.pi/2, np.pi/4]
+    # Golden resetting joints
+    # reset_joint_positions = [  # pose1
+    #     -1.589,
+    #     -0.19826458111314524,
+    #     -0.01990020486871322,
+    #     -2.4732269941140346,
+    #     -0.01307073642274261,
+    #     2.30396583422025,
+    #     0.8480939705504309,
+    # ]
+
+    # pose0
+    # reset_joint_positions = [-1.589, -0.016, -0.061, -2.973, 1.45, 1.564, 0.851]
+    reset_joint_positions = [1, -np.pi/4, 0, -3/4 * np.pi, 0, np.pi/2, np.pi/4]
+
+    # This is for varying initialization of joints a little bit to
+    # increase data variation.
+    # reset_joint_positions = [
+    #     e + np.clip(np.random.randn() * 0.005, -0.005, 0.005)
+    #     for e in reset_joint_positions
+    # ]
     action = reset_joint_positions + [1.0]
 
     while True:

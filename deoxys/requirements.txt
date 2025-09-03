@@ -3,10 +3,16 @@ PyYAML
 easydict
 google-api-python-client
 pybullet
-numpy<2
+numpy
 hidapi
 glfw
 numba
 termcolor
 simplejson
 mujoco
+evdev
+dataclasses_json
+matplotlib
+pyrealsense2
+opencv-python
+

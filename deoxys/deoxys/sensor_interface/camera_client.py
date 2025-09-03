@@ -439,9 +439,16 @@ class CameraClient:
                     bandwidth_mbps = (sum(recent_frame_sizes) * 8) / (time_span * 1024 * 1024)  # Mbps
                     print(f"  Receive Bandwidth: {bandwidth_mbps:.2f} Mbps")
     
+    def stop(self):
+        """Gracefully stop the camera client"""
+        print("[Image Client] Stopping camera client...")
+        self.running = False
+        
     def _close(self):
-        self._socket.close()
-        self._context.term()
+        if hasattr(self, '_socket'):
+            self._socket.close()
+        if hasattr(self, '_context'):
+            self._context.term()
         
         # Clean up shared memory
         for cam_name, cam_content in self.img_contents.items():
@@ -592,13 +599,18 @@ if __name__ == "__main__":
     config = load_camera_config()   
     client = CameraClient(config, image_show = True, Unit_Test=False) # local test
     
-
     image_receive_thread = threading.Thread(target = client.receive_process, daemon = True)
     image_receive_thread.daemon = True
     image_receive_thread.start()
 
-
-    while True:
-        time.sleep(1)
-        print("Image client is running... Press Ctrl+C to stop.")
+    try:
+        while True:
+            time.sleep(1)
+            print("Image client is running... Press Ctrl+C to stop.")
+    except KeyboardInterrupt:
+        print("\nReceived interrupt signal. Shutting down gracefully...")
+        client.stop()
+        # Give the thread a moment to finish
+        image_receive_thread.join(timeout=2.0)
+        print("Camera client stopped.")
 

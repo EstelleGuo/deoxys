@@ -1,4 +1,5 @@
 from .keyboard import Keyboard
 from .spacemouse import SpaceMouse
-from .gamepad_old import ZikwayGamepad
+from .gamepad import ZikwayGamepad
+from .gamepad import DualSenseGamepad
 

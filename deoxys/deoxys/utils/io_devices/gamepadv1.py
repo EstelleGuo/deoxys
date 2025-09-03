@@ -4,7 +4,6 @@ import numpy as np
 from evdev import InputDevice, list_devices, ecodes
 from deoxys.utils.transform_utils import rotation_matrix
 
-
 def scale_to_control(x, min_raw=0, max_raw=255, min_v=-1.0, max_v=1.0, deadzone=1):
     """
     Normalize raw HID readings from [min_raw, max_raw] to [min_v, max_v], with deadzone.
