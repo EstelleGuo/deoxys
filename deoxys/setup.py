@@ -11,10 +11,18 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 lines = [x for x in lines if ".png" not in x]
 long_description = "".join(lines)
 
+# read requirements from requirements.txt
+def read_requirements():
+    requirements_path = path.join(this_directory, "requirements.txt")
+    if path.exists(requirements_path):
+        with open(requirements_path, encoding="utf-8") as f:
+            return [line.strip() for line in f if line.strip() and not line.startswith("#")]
+    return []
+
 setup(
     name="deoxys",
     packages=[package for package in find_packages() if package.startswith("deoxys")],
-    install_requires=[],
+    install_requires=read_requirements(),
     eager_resources=["*"],
     include_package_data=True,
     python_requires=">=3",

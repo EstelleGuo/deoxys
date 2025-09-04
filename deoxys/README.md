@@ -1,15 +1,10 @@
 ```markdown
-### Installation
+### Installaion
 
-1. **Make the installer executable**
+1. **Install with Script**
     ```bash
-    sudo chmod 777 DesktopPackageInstall
+    bash DesktopPackageInstall
     ```
-2. **Run the installer**
-    ```bash
-    ./DesktopPackageInstall
-    ```
-
 ---
 
 ### Steps for Setting Up Franka Arm and Gripper
@@ -26,14 +21,14 @@
     cd Documents/WorkSpaces/nyc_ws/deoxys_control/deoxys
     ```
 
-4. **Initialize the Franka Arm**
+4. **Initialize the Franka Arm with your config**
     ```bash
     ./auto_scripts/auto_arm.sh
     ```
 
 5. **Open a Second Terminal Window**
 
-6. **SSH into the Remote Machine Again**
+6. **SSH into the Remote Machine**
     ```bash
     ssh nuc
     ```
@@ -52,25 +47,10 @@
 
 ### Steps for Setting Up Cameras
 
-1. **Ensure Redis Server is Running in Docker**
+1. **SSH into the Remote Machine**
     ```bash
-    docker run -d -p 6379:6379 redis:latest
+    python Documents/WorkSpaces/nyc_ws/deoxys_control/deoxys/deoxys/sensor_interface/camera_server.py
     ```
-
-2. **Start the Tripod Camera Node**
-    - Open a new terminal window and run:
-    ```bash
-    cd /home/gn/Documents/Reaserach_Space/nyu_learning/deoxys_vision/scripts
-    python deoxys_camera_node.py --eval --use-rgb --use-depth --visualization --camera_info tripod_cam.yml
-    ```
-
-3. **Start the Wrist Camera Node**
-    - Open another new terminal window and run:
-    ```bash
-    cd /home/gn/Documents/Reaserach_Space/nyu_learning/deoxys_vision/scripts
-    python deoxys_camera_node.py --eval --use-rgb --use-depth --visualization --camera_info wrist_cam.yml
-    ```
-
 ---
 
 ### Steps for Collecting Data

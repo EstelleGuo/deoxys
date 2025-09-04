@@ -22,7 +22,7 @@ logger = get_deoxys_example_logger()
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--interface-cfg", type=str, default="charmander.yml")
+    parser.add_argument("--interface-cfg", type=str, default="franka_gn.yml")
     parser.add_argument("--controller-type", type=str, default="OSC_POSE")
     args = parser.parse_args()
     return args
@@ -137,18 +137,14 @@ def main():
 
     controller_cfg = get_default_controller_config(controller_type)
 
-    reset_joint_positions = [
-        0.09162008114028396,
-        -0.19826458111314524,
-        -0.01990020486871322,
-        -2.4732269941140346,
-        -0.01307073642274261,
-        2.30396583422025,
-        0.8480939705504309,
-    ]
+    reset_joint_positions = [0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, 0]
 
     reset_joints_to(robot_interface, reset_joint_positions)
+    time.sleep(1)
+    reset_joint_positions = [0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 2]
+    reset_joints_to(robot_interface, reset_joint_positions)
 
+    # time.sleep(2)
     move_to_target_pose(
         robot_interface,
         controller_type,
@@ -159,7 +155,7 @@ def main():
         interpolation_method="linear",
     )
 
-    robot_interface.close()
+    # robot_interface.close()
 
 
 if __name__ == "__main__":

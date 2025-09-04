@@ -222,6 +222,26 @@ class FrankaInterface:
 
         logger.debug("Preprocess fnished")
 
+    ## Switch from Joint Position controller to OSC need some preparation
+    ## Increase wait_steps if you find random movements at the beginning of the switch
+    def switch_controller(self, wait_steps=50):
+        for _ in range(wait_steps):
+            dummy_msg = franka_controller_pb2.FrankaDummyControllerMessage()
+            control_msg = franka_controller_pb2.FrankaControlMessage()
+            control_msg.controller_type = (
+                franka_controller_pb2.FrankaControlMessage.ControllerType.NO_CONTROL
+            )
+
+            control_msg.control_msg.Pack(dummy_msg)
+            control_msg.timeout = 0.2
+            control_msg.termination = False
+
+            msg_str = control_msg.SerializeToString()
+            self._publisher.send(msg_str)
+            time.sleep(0.05)
+
+        logger.debug("Preprocess fnished")
+
     def control(
         self,
         controller_type: str,
@@ -251,7 +271,10 @@ class FrankaInterface:
             self.last_time = time.time_ns()
 
         if self._last_controller_type != controller_type:
-            self.preprocess()
+            if self._last_controller_type == "JOINT_POSITION" and controller_type.startswith("OSC"):
+                self.switch_controller()
+            else:
+                self.preprocess()
             self._last_controller_type = controller_type
 
         controller_cfg = verify_controller_config(controller_cfg, use_default=True)

@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from deoxys import config_root
-# from deoxys_vision.networking.camera_redis_interface import CameraRedisSubInterface
 from deoxys.franka_interface import FrankaInterface
 from deoxys.utils import YamlConfig
 from deoxys.utils.input_utils import input2action
@@ -19,7 +18,7 @@ from deoxys.experimental.motion_utils import reset_joints_to
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--interface-cfg", type=str, default="franka_gyh.yml")
+    parser.add_argument("--interface-cfg", type=str, default="franka_right.yml")
     parser.add_argument(
         "--controller-cfg", type=str, default="osc-position-controller.yml"
     )
@@ -42,14 +41,14 @@ def main():
     #     cr_interfaces[camera_id] = cr_interface
 
 
-    robot_interface = FrankaInterface(config_root + f"/{args.interface_cfg}", use_visualizer=True)
+    robot_interface = FrankaInterface(config_root + f"/{args.interface_cfg}")
 
-    demo_file_name = str(args.folder / "run43.hdf5")
+    demo_file_name = str(args.folder / "demo.hdf5")
     demo = h5py.File(demo_file_name, "r")
 
-    episode = demo["data/demo_43"]
+    episode = demo["data/ep_0"]
 
-    joint_sequence = episode["obs/proprio_joints"]
+    joint_sequence = episode["proprio_joints"]
     joint_start = joint_sequence[0]
     print("move to starting point of the trajectory ...")
     print(joint_start)
@@ -60,9 +59,9 @@ def main():
 
     # Initialize robot interface
     controller_cfg = YamlConfig(config_root + f"/{args.controller_cfg}").as_easydict()
-    controller_type = "OSC_POSITION"
+    controller_type = "OSC_POSE"
 
-    actions = episode["actions"]
+    actions = episode["actions"][()]
 
     for action in actions:
         robot_interface.control(
