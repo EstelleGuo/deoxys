@@ -11,7 +11,7 @@ fi
 # Check if franka_teach environment exists, if not, create it
 if ! conda env list | grep -q 'franka_teach'; then
     echo "Creating conda environment 'franka_teach'..."
-    mamba create -y -n franka_teach python=3.10
+    mamba create -y -n franka_teach python=3.9
     mamba install -y -n franka_teach zeromq libprotobuf protobuf cmake make pkg-config
 fi
 
